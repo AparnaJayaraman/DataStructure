@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+// Structure to represent a node in the linked list
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Function to add a new node at the beginning of the list
+void push(Node* head_ref, int new_data) {
+    Node* new_node = new Node();
+    new_node->data = new_data;
+    new_node->next = (head_ref);
+    (head_ref) = new_node;
+}
+
+// Function to remove nodes with greater values on the right
+Node* removeNodesWithGreaterOnRight(Node* head) {
+    if (!head) return nullptr;
+
+    Node* tem = new Node();
+    tem->next = head;
+    Node* prev = tem;
+    Node* current = head;
+
+    while (current != nullptr && current->next != nullptr) {
+        if (current->data < current->next->data) {
+            Node* temp = current;
+            prev->next = current->next;
+            current = current->next;
+            delete temp;
+        } else {
+            prev = current;
+            current = current->next;
+        }
+    }
+
+    Node* newHead = tem->next;
+    delete tem;
+    return newHead;
+}
+
+// Function to print the linked list
+void printList(Node* node) {
+    while (node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* head = nullptr;
+
+    // Create the linked list
+    push(head, 3);
+    push(head, 2);
+    push(head, 6);
+    push(head, 5);
+    push(head, 11);
+    push(head, 10);
+    push(head, 15);
+    push(head, 12);
+
+    // Print the original list
+    cout << "Original list: ";
+    printList(head);
+
+    // Remove nodes with greater values on the right
+    head = removeNodesWithGreaterOnRight(head);
+
+    // Print the modified list
+    cout << "Modified list: ";
+    printList(head);
+    return 0;
+}
