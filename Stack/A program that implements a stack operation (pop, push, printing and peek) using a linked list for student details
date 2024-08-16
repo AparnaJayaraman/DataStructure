@@ -1,0 +1,98 @@
+#include <iostream>
+#include <string>
+
+// Structure to hold student details
+struct Student {
+    std::string name;
+    int id;
+    double gpa;
+};
+
+// Node structure for the linked list
+struct Node {
+    Student data;
+    Node* next;
+};
+
+// Stack class implemented using linked list
+class StudentStack {
+private:
+    Node* top;
+
+public:
+    // Constructor
+    StudentStack() : top(nullptr) {}
+
+    // Destructor to clean up memory
+    ~StudentStack() {
+        while (top != nullptr) {
+            pop();
+        }
+    }
+
+    // Push operation to add a student to the stack
+    void push(const std::string& name, int id, double gpa) {
+        Node* newNode = new Node;
+        newNode->data = {name, id, gpa};
+        newNode->next = top;
+        top = newNode;
+        std::cout << "Student " << name << " added to stack.\n";
+    }
+
+    // Pop operation to remove the top student from the stack
+    void pop() {
+        if (isEmpty()) {
+            std::cout << "Stack is empty. Cannot pop.\n";
+            return;
+        }
+        Node* temp = top;
+        top = top->next;
+        std::cout << "Student " << temp->data.name << " removed from stack.\n";
+        delete temp;
+    }
+
+    // Peek operation to view the top student without removing
+    Student peek() const {
+        if (isEmpty()) {
+            std::cout << "Stack is empty. No top element.\n";
+            return {"", -1, 0.0};  // Return a dummy student
+        }
+        return top->data;
+    }
+
+    // Print operation to display all students in the stack
+    void printStack() const {
+        if (isEmpty()) {
+            std::cout << "Stack is empty.\n";
+            return;
+        }
+        Node* current = top;
+        std::cout << "Stack contents:\n";
+        while (current != nullptr) {
+            std::cout << "Name: " << current->data.name << ", ID: " << current->data.id << ", GPA: " << current->data.gpa << '\n';
+            current = current->next;
+        }
+    }
+
+    // Check if the stack is empty
+    bool isEmpty() const {
+        return top == nullptr;
+    }
+};
+
+int main() {
+    StudentStack stack;
+    stack.push("Aparna", 101, 3.8);
+    stack.push("Jaya", 102, 3.6);
+    stack.push("Chandra", 103, 3.9);
+
+    stack.printStack();
+
+    Student topStudent = stack.peek();
+    std::cout << "Top student: Name: " << topStudent.name << ", ID: " << topStudent.id << ", GPA: " << topStudent.gpa << '\n';
+
+    stack.pop();
+    stack.printStack();
+
+    return 0;
+}
