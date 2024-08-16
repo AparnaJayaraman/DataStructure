@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+// Function to insert a new node at the end of a circular linked list
+void insertAtEnd(Node*& head, int data) {
+    Node* newNode = new Node();
+    newNode->data = data;
+
+    if (head == nullptr) {
+        newNode->next = newNode;
+        head = newNode;
+    } else {
+        Node* last = head;
+        while (last->next != head) {
+            last = last->next;
+        }
+        last->next = newNode;
+        newNode->next = head;
+    }
+}
+
+// Function to display the circular linked list
+void display(Node* head) {
+    if (head == nullptr) return;
+
+    Node* temp = head;
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+    cout << endl;
+}
+
+// Function to merge two sorted circular linked lists into one sorted circular linked list
+Node* mergeCircularLists(Node* head1, Node* head2) {
+    if (head1 == nullptr) return head2;
+    if (head2 == nullptr) return head1;
+
+    Node* head3 = nullptr;
+    Node* tail3 = nullptr;
+
+    Node* curr1 = head1;
+    Node* curr2 = head2;
+
+    // Initial population of head3
+    do {
+        Node* newNode = new Node();
+        if (curr1->data < curr2->data) {
+            newNode->data = curr1->data;
+            curr1 = curr1->next;
+        } else {
+            newNode->data = curr2->data;
+            curr2 = curr2->next;
+        }
+        if (head3 == nullptr) {
+            head3 = newNode;
+            tail3 = newNode;
+            head3->next = head3;
+        } else {
+            tail3->next = newNode;
+            tail3 = newNode;
+            tail3->next = head3;
+        }
+    } while (curr1 != head1 && curr2 != head2);
+
+    // If curr1 still has elements
+    while (curr1 != head1) {
+        Node* newNode = new Node();
+        newNode->data = curr1->data;
+        tail3->next = newNode;
+        tail3 = newNode;
+        tail3->next = head3;
+        curr1 = curr1->next;
+    }
+
+    // If curr2 still has elements
+    while (curr2 != head2) {
+        Node* newNode = new Node();
+        newNode->data = curr2->data;
+        tail3->next = newNode;
+        tail3 = newNode;
+        tail3->next = head3;
+        curr2 = curr2->next;
+    }
+
+    return head3;
+}
+
+int main() {
+    Node* head1 = nullptr;
+    Node* head2 = nullptr;
+
+    // Insert nodes into the first sorted circular linked list
+    insertAtEnd(head1, 1);
+    insertAtEnd(head1, 3);
+    insertAtEnd(head1, 5);
+    insertAtEnd(head1, 7);
+
+    // Insert nodes into the second sorted circular linked list
+    insertAtEnd(head2, 2);
+    insertAtEnd(head2, 4);
+    insertAtEnd(head2, 6);
+    insertAtEnd(head2, 8);
+
+    // Display the original lists
+    cout << "List 1: ";
+    display(head1);
+    cout << "List 2: ";
+    display(head2);
+
+    // Merge the lists and display the result
+    Node* head3 = mergeCircularLists(head1, head2);
+    cout << "Merged list: ";
+    display(head3);
+
+    return 0;
+}
