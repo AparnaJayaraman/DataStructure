@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Structure to represent an employee node
+struct Employee {
+    int id;
+    string name;
+    double salary;
+    Employee* next;
+};
+
+// Function to add a new employee to the beginning of the list
+void addEmployee(Employee* head_ref, int id, string name, double salary) {
+    Employee* new_employee = new Employee;
+    new_employee->id = id;
+    new_employee->name = name;
+    new_employee->salary = salary;
+    new_employee->next = (head_ref);
+    (*head_ref) = new_employee;
+}
+
+// Function to find the employee with the highest salary
+Employee* findHighestSalary(Employee* head) {
+    if (head == nullptr) {
+        return nullptr;
+    }
+
+    Employee* highest = head;
+    Employee* current = head->next;
+
+    while (current != nullptr) {
+        if (current->salary > highest->salary) {
+            highest = current;
+        }
+        current = current->next;
+    }
+
+    return highest;
+}
+
+int main() {
+    Employee* head = nullptr;
+
+    // Adding employees to the list
+    addEmployee(&head, 1, "Jey", 50000);
+    addEmployee(&head, 2, "Jay", 75000);
+    addEmployee(&head, 3, "Dhivya", 60000);
+    addEmployee(&head, 4, "Neera, 80000);
+    addEmployee(&head, 5, "Mysty", 65000);
+
+    // Finding the employee with the highest salary
+    Employee* highestSalaryEmployee = findHighestSalary(head);
+
+    // Displaying the employee with the highest salary
+    if (highestSalaryEmployee != nullptr) {
+        cout << "Employee with the highest salary:" << endl;
+        cout << "ID: " << highestSalaryEmployee->id << endl;
+        cout << "Name: " << highestSalaryEmployee->name << endl;
+        cout << "Salary: " << highestSalaryEmployee->salary << endl;
+    } else {
+        cout << "The list is empty." << endl;
+    }
+
+    return 0;
+}
