@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+class CircularLinkedList {
+private:
+    struct Node {
+        int data;
+        Node* next;
+    };
+
+    Node* head;
+
+public:
+    CircularLinkedList() : head(nullptr) {}
+
+    void insertAtEnd(int data) {
+        Node* newNode = new Node;
+        newNode->data = data;
+
+        if (!head) {
+            head = newNode;
+            head->next = head;
+        } else {
+            Node* temp = head;
+            while (temp->next != head) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+            newNode->next = head;
+        }
+    }
+
+    void deleteEveryNth(int n) {
+        if (!head) return;
+
+        Node* temp = head;
+        Node* prev = nullptr;
+
+        while (head->next != head) {
+            for (int i = 1; i < n; i++) {
+                prev = temp;
+                temp = temp->next;
+            }
+
+            // Delete the nth node
+            prev->next = temp->next;
+            cout << "Deleted node: " << temp->data << endl;
+            delete temp;
+
+            // Move to the next node
+            temp = prev->next;
+        }
+
+        // Delete the last remaining node
+        cout << "Deleted node: " << temp->data << endl;
+        delete temp;
+        head = nullptr;
+    }
+
+    void display() {
+        if (!head) return;
+
+        Node* temp = head;
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != head);
+        cout << endl;
+    }
+};
+
+int main() {
+    CircularLinkedList cll;
+
+    // Insert nodes into the circular linked list
+    for (int i = 1; i <= 6; i++) {
+        cll.insertAtEnd(i);
+    }
+
+    cll.display();
+
+    // Delete every nth element
+    int n = 3;
+    cll.deleteEveryNth(n);
+
+    return 0;
+}
