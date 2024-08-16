@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+void display(Node* head) {
+    if (head == nullptr) return; // If the list is empty, do nothing
+    Node* node = head;
+    // Loop through the circular linked list
+    do {
+        cout << node->data << " ";
+        node = node->next;
+    } while (node != head);
+    cout << endl;
+}
+
+void insertAtBeginning(Node*& head, int data) {
+    // Create a new node and assign the integer value to its data
+    Node* newNode = new Node();
+    newNode->data = data;
+
+    // Check if the list is empty
+    if (head == nullptr) {
+        // The new node points to itself, forming a single-node circular linked list
+        head = newNode;
+        newNode->next = head;
+    } else {
+        // Traverse to the last node
+        Node* last = head;
+        while (last->next != head) {
+            last = last->next;
+        }
+        // Insert the new node before the head and update pointers
+        last->next = newNode;
+        newNode->next = head;
+        head = newNode; // Update the head to the new node
+    }
+}
+
+int main() {
+    Node* head = nullptr; // Initialize the head pointer to nullptr
+
+    // Insert nodes at the beginning of the circular linked list
+    insertAtBeginning(head, 2);
+    insertAtBeginning(head, 5);
+    insertAtBeginning(head, 3);
+    insertAtBeginning(head, 6);
+    insertAtBeginning(head, 7);
+    insertAtBeginning(head, 8);
+
+    // Display the contents of the circular linked list
+    display(head);
+
+    return 0;
+}
