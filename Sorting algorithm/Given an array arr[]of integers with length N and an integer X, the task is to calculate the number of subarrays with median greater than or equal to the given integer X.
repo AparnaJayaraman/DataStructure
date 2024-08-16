@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+
+// Function to perform Bubble Sort on an array
+void bubbleSort(int arr[], int size) {
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = 0; j < size - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j + 1]
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Function to count subarrays with median greater than or equal to x
+int countSubarraysWithMedianGreaterThanOrEqualTo(int arr[], int n, int x) {
+    int count = 0;
+
+    // Iterate over all possible subarrays
+    for (int start = 0; start < n; ++start) {
+        for (int end = start; end < n; ++end) {
+            // Calculate the size of the subarray
+            int size = end - start + 1;
+            int subarray[size];
+
+            // Copy subarray elements
+            for (int k = 0; k < size; ++k) {
+                subarray[k] = arr[start + k];
+            }
+
+            // Sort the subarray using Bubble Sort
+            bubbleSort(subarray, size);
+
+            // Find the median
+            int medianIndex = size / 2;
+            int median = subarray[medianIndex];
+
+            // Check if the median is greater than or equal to x
+            if (median >= x) {
+                ++count;
+            }
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int n, x;
+
+    cout << "Enter the number of elements in the array: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < n; ++i) {
+        cin >> arr[i];
+    }
+
+    cout << "Enter the value of x: ";
+    cin >> x;
+
+    int result = countSubarraysWithMedianGreaterThanOrEqualTo(arr, n, x);
+    cout << "Number of subarrays with median greater than or equal to " << x << " is: " << result << endl;
+
+    return 0;
+}
