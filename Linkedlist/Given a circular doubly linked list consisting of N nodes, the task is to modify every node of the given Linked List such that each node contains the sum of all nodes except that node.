@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+};
+
+// Function to insert a new node at the end of the circular doubly linked list
+void insertAtEnd(Node*& head, int data) {
+    Node* newNode = new Node();
+    newNode->data = data;
+
+    if (head == nullptr) {
+        newNode->next = newNode;
+        newNode->prev = newNode;
+        head = newNode;
+    } else {
+        Node* last = head->prev;
+        newNode->next = head;
+        head->prev = newNode;
+        newNode->prev = last;
+        last->next = newNode;
+    }
+}
+
+// Function to display the circular doubly linked list
+void display(Node* head) {
+    if (head == nullptr) return;
+
+    Node* temp = head;
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+    cout << endl;
+}
+
+// Function to modify each node such that each node contains the sum of all nodes except that node
+void modifyNodes(Node* head) {
+    if (head == nullptr) return;
+
+    // Calculate the total sum of all nodes
+    int totalSum = 0;
+    Node* temp = head;
+    do {
+        totalSum += temp->data;
+        temp = temp->next;
+    } while (temp != head);
+
+    // Modify each node
+    temp = head;
+    do {
+        int currentData = temp->data;
+        temp->data = totalSum - currentData;
+        temp = temp->next;
+    } while (temp != head);
+}
+
+int main() {
+    Node* head = nullptr;
+
+    // Insert nodes into the circular doubly linked list
+    insertAtEnd(head, 1);
+    insertAtEnd(head, 2);
+    insertAtEnd(head, 3);
+    insertAtEnd(head, 4);
+    insertAtEnd(head, 5);
+
+    // Display the original list
+    cout << "Original list: ";
+    display(head);
+
+    // Modify the nodes
+    modifyNodes(head);
+
+    // Display the modified list
+    cout << "Modified list: ";
+    display(head);
+
+    return 0;
+}
