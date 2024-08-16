@@ -1,0 +1,40 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include<algorithm>
+
+std::string removeStars(const std::string& s) {
+    std::stack<char> stack;
+
+    for (char ch : s) {
+        if (ch == '*') {
+            if (!stack.empty()) {
+                stack.pop(); // Remove the closest non-star character
+            }
+        } else {
+            stack.push(ch); // Add non-star character to stack
+        }
+    }
+
+    // Reconstruct the result string from the stack
+    std::string result;
+    while (!stack.empty()) {
+        result.push_back(stack.top());
+        stack.pop();
+    }
+
+    // Since stack gives us characters in reverse order, reverse the result string
+    std::reverse(result.begin(), result.end());
+    return result;
+}
+
+int main() {
+    std::string input;
+    std::cout << "Enter a string containing characters and stars (*): ";
+    std::cin >> input;
+
+    std::string result = removeStars(input);
+    std::cout << "String after removing stars and corresponding characters: " << result << '\n';
+
+    return 0;
+}
