@@ -1,0 +1,97 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class Queue {
+private:
+    Node* frontNode;
+    Node* rearNode;
+
+public:
+    Queue() {
+        frontNode = nullptr;
+        rearNode = nullptr;
+    }
+
+    // Function to add an element to the end of the queue
+    void enqueue(int value) {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = nullptr;
+
+        if (rearNode == nullptr) {
+            frontNode = rearNode = newNode;
+            return;
+        }
+
+        rearNode->next = newNode;
+        rearNode = newNode;
+    }
+
+    // Function to remove an element from the front of the queue
+    void dequeue() {
+        if (frontNode == nullptr) {
+            cout << "Queue is empty, cannot dequeue." << endl;
+            return;
+        }
+
+        Node* temp = frontNode;
+        frontNode = frontNode->next;
+
+        if (frontNode == nullptr) {
+            rearNode = nullptr;
+        }
+
+        delete temp;
+    }
+
+    // Function to get the front element of the queue
+    int front() {
+        if (frontNode == nullptr) {
+            cout << "Queue is empty." << endl;
+            return -1;
+        }
+        return frontNode->data;
+    }
+
+    // Function to check if the queue is empty
+    bool isEmpty() {
+        return frontNode == nullptr;
+    }
+
+    // Destructor to clean up the memory
+    ~Queue() {
+        while (frontNode != nullptr) {
+            Node* temp = frontNode;
+            frontNode = frontNode->next;
+            delete temp;
+        }
+    }
+};
+
+int main() {
+    Queue q;
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+
+    cout << "Front element is: " << q.front() << endl;
+
+    q.dequeue();
+    cout << "Front element is: " << q.front() << endl;
+
+    q.dequeue();
+    cout << "Front element is: " << q.front() << endl;
+
+    q.dequeue();
+    if (q.isEmpty()) {
+        cout << "Queue is empty now." << endl;
+    }
+
+    return 0;
+}
