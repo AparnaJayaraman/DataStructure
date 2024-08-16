@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+// Structure to represent a node in the linked list
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Function to add a new node at the beginning of the list
+void push(Node* head_ref, int new_data) {
+    Node* new_node = new Node();
+    new_node->data = new_data;
+    new_node->next = (head_ref);
+    (head_ref) = new_node;
+}
+
+// Function to remove duplicates from a sorted linked list
+void removeDuplicates(Node* head) {
+    if (head == nullptr) {
+        return;
+    }
+
+    Node* current = head;
+
+    while (current->next != nullptr) {
+        if (current->data == current->next->data) {
+            Node* next_next = current->next->next;
+            delete current->next;
+            current->next = next_next;
+        } else {
+            current = current->next;
+        }
+    }
+}
+
+// Function to print the linked list
+void printList(Node* node) {
+    while (node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* head = nullptr;
+
+    // Creating a sorted linked list with duplicates
+    push(head, 20);
+    push(head, 20);
+    push(head, 15);
+    push(head, 15);
+    push(head, 15);
+    push(head, 10);
+    push(head, 10);
+    push(head, 5);
+    push(head, 5);
+
+    cout << "Original list: ";
+    printList(head);
+
+    // Removing duplicates
+    removeDuplicates(head);
+
+    cout << "List after removing duplicates: ";
+    printList(head);
+    return 0;
+}
